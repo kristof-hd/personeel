@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang='nl' xmlns:th='http://www.thymeleaf.org'>
+<head>
+	<link rel='icon' th:href='@{/images/personeel.ico}' type='image/x-icon'>
+	<title>Personeel</title>
+	<meta name='viewport' content='width=device-width,initial-scale=1'>
+	<link rel='stylesheet' th:href='@{/css/personeel.css}'>
+</head>
+<body>
+	<h1 th:text='|Rijksregisternummer van ${werknemer.voornaam} ${werknemer.familienaam}|'></h1>
+	<form method='post'
+		th:action='@{/werknemers/{id}/rijksregisternummer(id=${werknemer.id})}'
+		th:object='${rijksregisternummerForm}'>
+		<label>Rijksregisternummer: 
+			<!-- <span th:if="${#fields.hasErrors('bedrag')}" th:errors='*{bedrag}'></span> --> 
+<!-- 			<input type='number' th:field='*{rijksregisternummer}' required autofocus> -->
+			<input th:field='*{rijksregisternr}' required autofocus>
+		</label> <input type='submit' value='Opslaan'>
+	</form>
+
+</body>
+</html>

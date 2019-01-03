@@ -24,7 +24,9 @@ class WerknemerController {
 	private static final String REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN="redirect:/";
 	private static final String OPSLAG_VIEW = "werknemers/opslag";
 	private static final String REDIRECT_NA_OPSLAG="redirect:/werknemers/{id}"; 
-	
+	private static final String RIJKSREGISTERNUMMER_VIEW="werknemers/rijksregisternummer"; 
+	private static final String REDIRECT_NA_RIJKSREGISTERNUMMER="redirect:/werknemers/{id}"; 
+
 	private final WerknemerService werknemerService; 
 	
 	WerknemerController(WerknemerService werknemerService) {
@@ -84,4 +86,29 @@ class WerknemerController {
 		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN);
 	}	
 
+	@GetMapping("{werknemer}/rijksregisternummer")
+	ModelAndView rijksregisternummer(@PathVariable Optional<Werknemer> werknemer) {
+		RijksregisternummerForm form = new RijksregisternummerForm();
+		form.setRijksregisternr(werknemer.get().getRijksregisternr());
+		return new ModelAndView(RIJKSREGISTERNUMMER_VIEW)
+					.addObject(werknemer.get())
+					.addObject(form);
+	}		
+
+	@PostMapping("{werknemer}/rijksregisternummer")
+	ModelAndView rijksregisternummer(@PathVariable Optional<Werknemer> werknemer, @Valid RijksregisternummerForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+		if (werknemer.isPresent()) {
+			if (bindingResult.hasErrors()) {
+				return new ModelAndView(RIJKSREGISTERNUMMER_VIEW).addObject(werknemer.get());
+			}
+			werknemer.get().setRijksregisternr(form.getRijksregisternr());
+			werknemerService.update(werknemer.get());
+			redirectAttributes.addAttribute("id", werknemer.get().getId());
+			return new ModelAndView(REDIRECT_NA_RIJKSREGISTERNUMMER);
+		}
+		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
+		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN);
+	}	
+	
+	
 }
