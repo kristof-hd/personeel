@@ -198,3 +198,7 @@ blockquote {
 .pagineren a:hover {
 	text-decoration: underline;
 }
+
+#jobtitels li {
+	display:inline; 
+}

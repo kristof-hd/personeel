@@ -14,41 +14,57 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import be.vdab.personeel.entities.Werknemer;
+import be.vdab.personeel.services.WerknemerService;
 
 @Controller
 @RequestMapping("werknemers")
-public class WerknemerController {
+class WerknemerController {
 
-	private static final String WERKNEMER_VIEW="werknemer";
+	private static final String WERKNEMER_VIEW="werknemers/werknemer";
 	private static final String REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN="redirect:/";
 	private static final String OPSLAG_VIEW = "werknemers/opslag";
 	private static final String REDIRECT_NA_OPSLAG="redirect:/werknemers/{id}"; 
 	
+	private final WerknemerService werknemerService; 
+	
+	WerknemerController(WerknemerService werknemerService) {
+		this.werknemerService=werknemerService;
+	}
+	
+	@GetMapping
+	String initieelGetoondeWerknemer() {
+		long idHoogste=1; 
+		return "redirect:/werknemers/"+idHoogste;
+	}
+		
+	
 //	@GetMapping
-//	String redirect...
+//	String initieelGetoondeWerknemer() {
+//		long idHoogste=werknemerService.findMetHoogsteHierarchie().getId(); 
+//		return "redirect:/werknemers/{idHoogste}";
+//	}
 	
 //	@GetMapping("{werknemer}")
 //	ModelAndView read(@PathVariable Optional<Werknemer> werknemer) {
-//		
-//			return new ModelAndView(WERKNEMER_VIEW).addObject(werknemer.get());
-//		
-//		
+//		return new ModelAndView(WERKNEMER_VIEW).addObject(werknemer.get());
 //	}
 	
 	@GetMapping("{werknemer}")
-	ModelAndView read(@PathVariable Optional<Werknemer> werknemer) {
-		return new ModelAndView(WERKNEMER_VIEW, "werknemer", werknemer.get());
+	ModelAndView read(@PathVariable Optional<Werknemer> werknemer, RedirectAttributes redirectAttributes) {
+		if (werknemer.isPresent()) {
+			return new ModelAndView(WERKNEMER_VIEW).addObject(werknemer.get());
+			//return new ModelAndView(WERKNEMER_VIEW, "werknemer", werknemer.get());
+		}
+		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
+		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN); 
 	}
 		
 	@GetMapping("{werknemer}/opslag")
 	ModelAndView opslag(@PathVariable Optional<Werknemer> werknemer) {
-		
 		OpslagForm form = new OpslagForm(); 
 		return new ModelAndView(OPSLAG_VIEW)
 					.addObject(werknemer.get())
 					.addObject(form);
-	
-		
 	}	
 
 	@PostMapping("{werknemer}/opslag")
@@ -57,15 +73,15 @@ public class WerknemerController {
 			if (bindingResult.hasErrors()) {
 				return new ModelAndView(OPSLAG_VIEW).addObject(werknemer.get());
 			}
-			werknemer.get().opslag(form.getBedrag());
+			//werknemer.get().opslag(form.getBedrag());
+			//werknemerService.update(werknemer.get());
+			werknemer.get().setSalaris(werknemer.get().getSalaris().add(form.getBedrag()));
 			werknemerService.update(werknemer.get());
 			redirectAttributes.addAttribute("id", werknemer.get().getId());
 			return new ModelAndView(REDIRECT_NA_OPSLAG);
 		}
 		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
 		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN);
-		
 	}	
-
 
 }

@@ -44,7 +44,7 @@ public class Werknemer implements Serializable {
 	@NotNull
 	@Email
 	private String email; 
-	
+
 	@ManyToOne(fetch=FetchType.LAZY, optional=false)
 	@JoinColumn(name="jobtitelid")
 	private Jobtitel jobtitel;

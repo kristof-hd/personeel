@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang='nl' xmlns:th='http://www.thymeleaf.org'>
+<head>
+	<link rel='icon' th:href='@{/images/personeel.ico}' type='image/x-icon'>
+	<title>Personeel</title>
+	<meta name='viewport' content='width=device-width,initial-scale=1'>
+	<link rel='stylesheet' th:href='@{/css/personeel.css}'>
+</head>
+<body>
+	<h1 th:text='Jobtitels'></h1>
+	<ul id='jobtitels'>
+		<li th:each='jobtitel:${jobtitels}'>
+			<a th:href='@{/jobtitels/(jobtitel=${jobtitel.naam})}' th:text='${jobtitel.naam}'></a>
+		</li>
+	</ul>
+	
+	<ul>
+		<li th:each='werknemer:${werknemers}'>
+			<a th:href='@{/werknemers/{id}(id=${werknemer.id})}' th:text='|${werknemer.voornaam} ${werknemer.familienaam}|'></a>
+		</li>
+	
+	</ul>
+</body>
+</html>
