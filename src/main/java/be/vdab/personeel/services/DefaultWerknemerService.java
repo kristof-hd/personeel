@@ -22,11 +22,17 @@ class DefaultWerknemerService implements WerknemerService {
 		return werknemerRepository.findById(id).get(); 
 	}
 	
-//	@Override
-//	public Werknemer findMetHoogsteHierarchie() {
-//		return werknemerRepository.findMetHoogsteHierarchie(); 
-//	}
-//	
+	@Override
+	public Werknemer findMetHoogsteHierarchie() {
+		return werknemerRepository.findMetHoogsteHierarchie(); 
+	}
+
+	@Override
+	public List<Werknemer> findOndergeschikten(long id) {
+		return werknemerRepository.findOndergeschikten(id); 
+	} 
+
+	
 	@Override
 	@Transactional(readOnly=false, isolation=Isolation.READ_COMMITTED)
 	public void update(Werknemer werknemer) {

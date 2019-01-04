@@ -1,22 +1,35 @@
 package be.vdab.personeel.web;
 
-import java.math.BigInteger;
+import java.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 
-class RijksregisternummerForm {
+import be.vdab.personeel.constraints.RijksregisternummerFormGeboortedatumEnControlegetal;
+
+@RijksregisternummerFormGeboortedatumEnControlegetal
+public class RijksregisternummerForm {
 	
 	@NotNull
-	@PositiveOrZero //TO DO: eigen annotatie maken
-	private BigInteger rijksregisternr;
+	private long rijksregisternr;
 
-	public BigInteger getRijksregisternr() {
+	private LocalDate geboorte; 
+	
+
+	public long getRijksregisternr() {
 		return rijksregisternr;
 	}
 
-	public void setRijksregisternr(BigInteger rijksregisternr) {
+	public void setRijksregisternr(long rijksregisternr) {
 		this.rijksregisternr = rijksregisternr;
 	} 
 
+	public LocalDate getGeboorte() {
+		return geboorte;
+	}
+
+	public void setGeboorte(LocalDate geboorte) {
+		this.geboorte = geboorte;
+	}
+	
+	
 }

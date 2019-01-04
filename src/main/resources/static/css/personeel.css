@@ -199,6 +199,11 @@ blockquote {
 	text-decoration: underline;
 }
 
+#ondergeschikten {
+	list-style-type: none; 
+	padding-left: 0; 
+}
+
 #jobtitels li {
 	display:inline; 
 }

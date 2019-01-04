@@ -2,9 +2,9 @@ package be.vdab.personeel.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -65,7 +65,10 @@ public class Werknemer implements Serializable {
 	@NotNull
 	private LocalDate geboorte;
 
-	private BigInteger rijksregisternr; 
+	//@Rijksregisternummer
+	@PositiveOrZero
+	@Column(unique=true)
+	private long rijksregisternr; 
 
 	@Version
 	private long versie;
@@ -110,7 +113,7 @@ public class Werknemer implements Serializable {
 		return geboorte;
 	}
 
-	public BigInteger getRijksregisternr() {
+	public long getRijksregisternr() {
 		return rijksregisternr;
 	}
 
@@ -154,7 +157,7 @@ public class Werknemer implements Serializable {
 		this.geboorte = geboorte;
 	}
 
-	public void setRijksregisternr(BigInteger rijksregisternr) {
+	public void setRijksregisternr(long rijksregisternr) {
 		this.rijksregisternr = rijksregisternr;
 	}
 

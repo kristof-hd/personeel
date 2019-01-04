@@ -4,12 +4,21 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd" version="2.1">
 
-<!-- 	<named-query name='Werknemer.findMetHoogsteHierarchie'>
+ 	<named-query name='Werknemer.findMetHoogsteHierarchie'>
 		<query>
 			select w from Werknemer w
 			where w.chefid is null 
 		</query>
-	</named-query> -->
+	</named-query>
+
+ 	<named-query name='Werknemer.findOndergeschikten'>
+		<query>
+			select w from Werknemer w
+			where w.chefid = :id 
+		</query>
+	</named-query>
+
+
 
 	<named-query name='Werknemer.findByJobtitelNaam'>
 		<query>

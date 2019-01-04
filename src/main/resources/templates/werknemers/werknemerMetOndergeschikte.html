@@ -23,7 +23,7 @@
 		<dd th:text='${{werknemer.geboorte}}'></dd>
 		<dt>Ondergeschikten</dt>		
 		<dd>
-			<ul>
+			<ul id='ondergeschikten'>
 				<li th:each='ondergeschikte:${ondergeschikten}'>
 					<a th:href='@{/werknemers/{id}/ondergeschikten/{ondergeschikte}(id=${werknemer.id}, ondergeschikte=|${ondergeschikte.id}|)}' th:text='|${ondergeschikte.voornaam} ${ondergeschikte.familienaam}|'></a>
 				</li>

@@ -9,5 +9,6 @@ import be.vdab.personeel.entities.Werknemer;
 
 public interface WerknemerRepository extends JpaRepository<Werknemer, Long> {
 	List<Werknemer> findByJobtitelNaam(@Param("jobtitel") String jobtitel);
-	//Werknemer findMetHoogsteHierarchie(); 
+	Werknemer findMetHoogsteHierarchie(); 
+	List<Werknemer> findOndergeschikten(long id); 
 }

@@ -9,5 +9,6 @@ public interface WerknemerService {
 	Werknemer findById(long id); 
 	void update(Werknemer werknemer); 
 	List<Werknemer> findByJobtitelNaam(String jobtitel);
-	//Werknemer findMetHoogsteHierarchie();
+	Werknemer findMetHoogsteHierarchie();
+	List<Werknemer> findOndergeschikten(long id); 
 }

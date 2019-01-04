@@ -37,28 +37,15 @@ class WerknemerController {
 	
 	@GetMapping
 	String initieelGetoondeWerknemer() {
-		long idHoogste=1; 
+		long idHoogste=werknemerService.findMetHoogsteHierarchie().getId(); 
 		return "redirect:/werknemers/"+idHoogste;
 	}
 		
-	
-//	@GetMapping
-//	String initieelGetoondeWerknemer() {
-//		long idHoogste=werknemerService.findMetHoogsteHierarchie().getId(); 
-//		return "redirect:/werknemers/{idHoogste}";
-//	}
-	
-//	@GetMapping("{werknemer}")
-//	ModelAndView read(@PathVariable Optional<Werknemer> werknemer) {
-//		return new ModelAndView(WERKNEMER_VIEW).addObject(werknemer.get());
-//	}
-	
 	@GetMapping("{werknemer}")
 	ModelAndView read(@PathVariable Optional<Werknemer> werknemer, RedirectAttributes redirectAttributes) {
 		if (werknemer.isPresent()) {
 			return new ModelAndView(WERKNEMER_VIEW).addObject(werknemer.get())
-					.addObject("ondergeschikten", werknemerService.findByJobtitelNaam("Sales Rep"));
-			//return new ModelAndView(WERKNEMER_VIEW, "werknemer", werknemer.get());
+					.addObject("ondergeschikten", werknemerService.findOndergeschikten(werknemer.get().getId()));
 		}
 		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
 		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN); 
@@ -70,7 +57,7 @@ class WerknemerController {
 		
 		if (werknemer.isPresent()) {
 			return new ModelAndView(WERKNEMER_MET_ONDERGESCHIKTE_VIEW).addObject(werknemer.get())
-					.addObject("ondergeschikten", werknemerService.findByJobtitelNaam("Sales Rep"))
+					.addObject("ondergeschikten", werknemerService.findOndergeschikten(werknemer.get().getId()))
 					.addObject("ondergeschikte", werknemerService.findById(ondergeschikte));
 			//return new ModelAndView(WERKNEMER_VIEW, "werknemer", werknemer.get());
 		}
@@ -109,6 +96,7 @@ class WerknemerController {
 	@GetMapping("{werknemer}/rijksregisternummer")
 	ModelAndView rijksregisternummer(@PathVariable Optional<Werknemer> werknemer) {
 		RijksregisternummerForm form = new RijksregisternummerForm();
+		form.setGeboorte(werknemer.get().getGeboorte());
 		form.setRijksregisternr(werknemer.get().getRijksregisternr());
 		return new ModelAndView(RIJKSREGISTERNUMMER_VIEW)
 					.addObject(werknemer.get())
