@@ -16,6 +16,11 @@ class DefaultWerknemerService implements WerknemerService {
 	DefaultWerknemerService(WerknemerRepository werknemerRepository) {
 		this.werknemerRepository=werknemerRepository; 
 	}
+
+	@Override
+	public Werknemer findById(long id) {
+		return werknemerRepository.findById(id).get(); 
+	}
 	
 //	@Override
 //	public Werknemer findMetHoogsteHierarchie() {

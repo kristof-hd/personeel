@@ -21,6 +21,8 @@ import be.vdab.personeel.services.WerknemerService;
 class WerknemerController {
 
 	private static final String WERKNEMER_VIEW="werknemers/werknemer";
+	private static final String WERKNEMER_MET_ONDERGESCHIKTE_VIEW="werknemers/werknemerMetOndergeschikte";
+
 	private static final String REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN="redirect:/";
 	private static final String OPSLAG_VIEW = "werknemers/opslag";
 	private static final String REDIRECT_NA_OPSLAG="redirect:/werknemers/{id}"; 
@@ -54,13 +56,31 @@ class WerknemerController {
 	@GetMapping("{werknemer}")
 	ModelAndView read(@PathVariable Optional<Werknemer> werknemer, RedirectAttributes redirectAttributes) {
 		if (werknemer.isPresent()) {
-			return new ModelAndView(WERKNEMER_VIEW).addObject(werknemer.get());
+			return new ModelAndView(WERKNEMER_VIEW).addObject(werknemer.get())
+					.addObject("ondergeschikten", werknemerService.findByJobtitelNaam("Sales Rep"));
 			//return new ModelAndView(WERKNEMER_VIEW, "werknemer", werknemer.get());
 		}
 		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
 		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN); 
 	}
+
+	@GetMapping(path="{werknemer}/ondergeschikten/{ondergeschikte}")
+	ModelAndView ondergeschikte(@PathVariable Optional<Werknemer> werknemer, @PathVariable long ondergeschikte, RedirectAttributes redirectAttributes) {
+		//return new ModelAndView(WERKNEMER_VIEW, "ondergeschikte", werknemerService.findById(ondergeschikte));
 		
+		if (werknemer.isPresent()) {
+			return new ModelAndView(WERKNEMER_MET_ONDERGESCHIKTE_VIEW).addObject(werknemer.get())
+					.addObject("ondergeschikten", werknemerService.findByJobtitelNaam("Sales Rep"))
+					.addObject("ondergeschikte", werknemerService.findById(ondergeschikte));
+			//return new ModelAndView(WERKNEMER_VIEW, "werknemer", werknemer.get());
+		}
+		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
+		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN); 
+		
+		
+		
+	}
+	
 	@GetMapping("{werknemer}/opslag")
 	ModelAndView opslag(@PathVariable Optional<Werknemer> werknemer) {
 		OpslagForm form = new OpslagForm(); 

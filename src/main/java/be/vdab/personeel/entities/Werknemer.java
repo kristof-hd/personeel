@@ -45,6 +45,8 @@ public class Werknemer implements Serializable {
 	@Email
 	private String email; 
 
+	private Long chefid; 
+	
 	@ManyToOne(fetch=FetchType.LAZY, optional=false)
 	@JoinColumn(name="jobtitelid")
 	private Jobtitel jobtitel;
@@ -88,6 +90,10 @@ public class Werknemer implements Serializable {
 		return email;
 	}
 
+	public Long getChefid() {
+		return chefid;
+	}
+
 	public Jobtitel getJobtitel() {
 		return jobtitel;
 	}
@@ -126,6 +132,10 @@ public class Werknemer implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public void setChefid(Long chefid) {
+		this.chefid = chefid;
 	}
 
 	public void setJobtitel(Jobtitel jobtitel) {
