@@ -30,10 +30,6 @@ public class Jobtitel implements Serializable {
 	@OneToMany(mappedBy = "jobtitel")
 	private Set<Werknemer> werknemers;
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public long getId() {
 		return id;
 	}
@@ -42,30 +38,16 @@ public class Jobtitel implements Serializable {
 		return naam;
 	}
 
-	public long getVersie() {
-		return versie;
-	}
-
 	public Set<Werknemer> getWerknemers() {
 		return werknemers;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public void setNaam(String naam) {
 		this.naam = naam;
 	}
 
-	public void setVersie(long versie) {
-		this.versie = versie;
-	}
-
 	public void setWerknemers(Set<Werknemer> werknemers) {
 		this.werknemers = werknemers;
 	}
-	
-	
 	
 }

@@ -25,9 +25,13 @@ public class RijksregisternummerFormValidator implements ConstraintValidator<Rij
 		long controlegetal=rijksregisternr%100;
 		long eerste6Cijfers = rijksregisternr/100000;
 		
-		return (eerste6Cijfers/10000 == geboorte.getYear() % 100);
-		
-//		return (eerste6Cijfers/10000 == geboorte.getYear() % 100) && ((eerste6Cijfers % 10000)/100 == geboorte.getMonthValue()) && 
-//				(eerste6Cijfers % 100 == geboorte.getDayOfMonth()) && (controlegetal == (97-eerste9Cijfers%97));	
+		if (geboorte.getYear() >= 2000) {
+			return (eerste6Cijfers/10000 == geboorte.getYear() % 100) && ((eerste6Cijfers % 10000)/100 == geboorte.getMonthValue()) && 
+					(eerste6Cijfers % 100 == geboorte.getDayOfMonth()) && controlegetal == (97-(2*Math.pow(10, 9)+eerste9Cijfers)%97); 
+		}
+		else {
+			return (eerste6Cijfers/10000 == geboorte.getYear() % 100) && ((eerste6Cijfers % 10000)/100 == geboorte.getMonthValue()) && 
+					(eerste6Cijfers % 100 == geboorte.getDayOfMonth()) && controlegetal == (97-eerste9Cijfers%97);
+		}
 	}
 }

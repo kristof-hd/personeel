@@ -66,16 +66,11 @@ public class Werknemer implements Serializable {
 	private LocalDate geboorte;
 
 	//@Rijksregisternummer
-	@PositiveOrZero
 	@Column(unique=true)
 	private long rijksregisternr; 
 
 	@Version
 	private long versie;
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 
 	public long getId() {
 		return id;
@@ -117,14 +112,6 @@ public class Werknemer implements Serializable {
 		return rijksregisternr;
 	}
 
-	public long getVersie() {
-		return versie;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
 	public void setFamilienaam(String familienaam) {
 		this.familienaam = familienaam;
 	}
@@ -161,12 +148,30 @@ public class Werknemer implements Serializable {
 		this.rijksregisternr = rijksregisternr;
 	}
 
-	public void setVersie(long versie) {
-		this.versie = versie;
-	}
-
 	public void opslag(BigDecimal bedrag) {
 		this.salaris.add(bedrag); 
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (rijksregisternr ^ (rijksregisternr >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Werknemer other = (Werknemer) obj;
+		if (rijksregisternr != other.rijksregisternr)
+			return false;
+		return true;
 	}
 	
 }

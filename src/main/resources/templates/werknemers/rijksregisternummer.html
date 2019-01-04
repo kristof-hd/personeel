@@ -12,14 +12,17 @@
 		th:action='@{/werknemers/{id}/rijksregisternummer(id=${werknemer.id})}'
 		th:object='${rijksregisternummerForm}'>
 		<label>Rijksregisternummer: 
-			<!-- <span th:if="${#fields.hasErrors('bedrag')}" th:errors='*{bedrag}'></span> --> 
-<!-- 			<input type='number' th:field='*{rijksregisternummer}' required autofocus> -->
-			<input th:field='*{rijksregisternr}' required autofocus>
+			<span th:if="${#fields.hasErrors('bedrag')}" th:errors='*{bedrag}'></span> 
+			<input type='number' th:field='*{rijksregisternr}' required autofocus>
 		</label> 
 		<label>Geboorte:
 			<input th:field='*{geboorte}' required autofocus>
 		</label>				
 		<input type='submit' value='Opslaan'>
+
+		<div th:if='${#fields.hasGlobalErrors()}'>
+		<div class='fout' th:each='err : ${#fields.globalErrors()}' th:text='${err}'></div>
+		</div>
 	</form>
 
 </body>

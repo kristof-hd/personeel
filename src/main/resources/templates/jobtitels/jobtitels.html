@@ -14,6 +14,8 @@
 		</li>
 	</ul>
 	
+	<h1 th:text='${jobtitel}'></h1>
+	
 	<ul>
 		<li th:each='werknemer:${werknemers}'>
 			<a th:href='@{/werknemers/{id}(id=${werknemer.id})}' th:text='|${werknemer.voornaam} ${werknemer.familienaam}|'></a>

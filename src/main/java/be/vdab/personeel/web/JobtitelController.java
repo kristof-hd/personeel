@@ -32,6 +32,7 @@ class JobtitelController {
 	@GetMapping(params="jobtitel")
 	ModelAndView werknemers(String jobtitel) {
 		return new ModelAndView(JOBTITELS_VIEW, "jobtitels", jobtitelService.findAll())
+				.addObject("jobtitel", jobtitel)
 				.addObject("werknemers", werknemerService.findByJobtitelNaam(jobtitel));
 	}
 }
