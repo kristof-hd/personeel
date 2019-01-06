@@ -3,6 +3,7 @@ package be.vdab.personeel.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
@@ -47,6 +49,12 @@ public class Werknemer implements Serializable {
 
 	private Long chefid; 
 	
+	@Transient
+	private List<Werknemer> ondergeschikten;  
+	
+	@Transient
+	private Werknemer chef;
+	
 	@ManyToOne(fetch=FetchType.LAZY, optional=false)
 	@JoinColumn(name="jobtitelid")
 	private Jobtitel jobtitel;
@@ -72,6 +80,33 @@ public class Werknemer implements Serializable {
 	@Version
 	private long versie;
 
+	public Werknemer(long id, String familienaam, String voornaam, String email, Jobtitel jobtitel, BigDecimal salaris, String paswoord, LocalDate geboorte, long rijksregisternr, long versie) {
+		this.id=id; 
+		this.familienaam=familienaam;
+		this.voornaam=voornaam;
+		this.email=email; 
+		this.jobtitel=jobtitel; 
+		this.salaris=salaris;
+		this.paswoord=paswoord;
+		this.geboorte=geboorte;
+		this.rijksregisternr=rijksregisternr;
+		this.versie=versie; 
+	}
+	
+	public Werknemer(String familienaam, String voornaam, String email, Jobtitel jobtitel, BigDecimal salaris, String paswoord, LocalDate geboorte, long rijksregisternr, long versie) {
+		this.familienaam=familienaam;
+		this.voornaam=voornaam;
+		this.email=email; 
+		this.jobtitel=jobtitel; 
+		this.salaris=salaris;
+		this.paswoord=paswoord;
+		this.geboorte=geboorte;
+		this.rijksregisternr=rijksregisternr;
+		this.versie=versie; 
+	}
+
+	public Werknemer() {}
+	
 	public long getId() {
 		return id;
 	}
@@ -92,6 +127,14 @@ public class Werknemer implements Serializable {
 		return chefid;
 	}
 
+	public List<Werknemer> getOndergeschikten() {
+		return ondergeschikten;
+	}
+
+	public Werknemer getChef() {
+		return chef;
+	}	
+	
 	public Jobtitel getJobtitel() {
 		return jobtitel;
 	}
@@ -128,6 +171,14 @@ public class Werknemer implements Serializable {
 		this.chefid = chefid;
 	}
 
+	public void setOndergeschikten(List<Werknemer> ondergeschikten) {
+		this.ondergeschikten = ondergeschikten;
+	}
+
+	public void setChef(Werknemer chef) {
+		this.chef = chef;
+	}
+	
 	public void setJobtitel(Jobtitel jobtitel) {
 		this.jobtitel = jobtitel;
 	}
@@ -149,7 +200,10 @@ public class Werknemer implements Serializable {
 	}
 
 	public void opslag(BigDecimal bedrag) {
-		this.salaris.add(bedrag); 
+		if (bedrag.compareTo(BigDecimal.ONE)<0) {
+			throw new IllegalArgumentException(); 
+		}
+		salaris=salaris.add(bedrag); 
 	}
 
 	@Override

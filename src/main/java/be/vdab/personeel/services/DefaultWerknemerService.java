@@ -1,6 +1,7 @@
 package be.vdab.personeel.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -18,8 +19,8 @@ class DefaultWerknemerService implements WerknemerService {
 	}
 
 	@Override
-	public Werknemer findById(long id) {
-		return werknemerRepository.findById(id).get(); 
+	public Optional<Werknemer> findById(long id) {
+		return werknemerRepository.findById(id); 
 	}
 	
 	@Override
@@ -32,13 +33,17 @@ class DefaultWerknemerService implements WerknemerService {
 		return werknemerRepository.findOndergeschikten(id); 
 	} 
 
+	@Override
+	public Werknemer findChef(long id) {
+		return werknemerRepository.findChef(id);
+	} 
 	
 	@Override
 	@Transactional(readOnly=false, isolation=Isolation.READ_COMMITTED)
 	public void update(Werknemer werknemer) {
 		werknemerRepository.save(werknemer); 
 	}
-	
+
 	@Override
 	public List<Werknemer> findByJobtitelNaam(String jobtitel) {
 		return werknemerRepository.findByJobtitelNaam(jobtitel); 

@@ -30,6 +30,14 @@ public class Jobtitel implements Serializable {
 	@OneToMany(mappedBy = "jobtitel")
 	private Set<Werknemer> werknemers;
 
+	public Jobtitel(String naam, long versie) {
+		this.naam=naam;
+		this.versie=versie; 
+	}
+	
+	public Jobtitel() {
+	}
+	
 	public long getId() {
 		return id;
 	}

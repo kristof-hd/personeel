@@ -1,7 +1,6 @@
 package be.vdab.personeel.web;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -15,7 +14,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class RijksregisternummerFormTest {
+public class OpslagFormTest {
 
 	private Validator validator;
 
@@ -26,27 +25,33 @@ public class RijksregisternummerFormTest {
 	}
 
 	@Test
-	public void rijksregisternrOk() {
-		Set<ConstraintViolation<RijksregisternummerForm>> violations = validator
-				.validateValue(RijksregisternummerForm.class, "rijksregisternr", BigDecimal.ONE, 
-						RijksregisternummerForm.class, "geboorte", LocalDate.of(1978,  11,  29));
+	public void bedragOk() {
+		Set<ConstraintViolation<OpslagForm>> violations = validator.validateValue(OpslagForm.class, "bedrag",
+				BigDecimal.ONE);
 		assertTrue(violations.isEmpty());
 	}
 
 	@Test
-	public void vanMoetIngeVuldZijn() {
-		Set<ConstraintViolation<VanTotPrijsForm>> violations = validator.validateValue(VanTotPrijsForm.class, "van",
-				null);
+	public void bedragMoetIngevuldZijn() {
+		Set<ConstraintViolation<OpslagForm>> violations = validator.validateValue(OpslagForm.class, "bedrag", null);
 		assertEquals(1, violations.size());
 		assertTrue(violations.iterator().next().getMessageTemplate().contains(".NotNull."));
 	}
 
 	@Test
-	public void vanMoetMinstensNulZijn() {
-		Set<ConstraintViolation<VanTotPrijsForm>> violations = validator.validateValue(VanTotPrijsForm.class, "van",
-				BigDecimal.valueOf(-1));
+	public void bedragMoetMinstens1Zijn() {
+		Set<ConstraintViolation<OpslagForm>> violations = validator.validateValue(OpslagForm.class, "bedrag",
+				BigDecimal.valueOf(0.5));
 		assertEquals(1, violations.size());
 		assertTrue(violations.iterator().next().getMessageTemplate().contains(".Min."));
 	}
 
+	@Test
+	public void bedragMagNietNegatiefZijn() {
+		Set<ConstraintViolation<OpslagForm>> violations = validator.validateValue(OpslagForm.class, "bedrag",
+				BigDecimal.valueOf(-1));
+		assertEquals(1, violations.size());
+		assertTrue(violations.iterator().next().getMessageTemplate().contains(".Min."));
+	}	
+	
 }

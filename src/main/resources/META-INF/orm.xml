@@ -18,7 +18,12 @@
 		</query>
 	</named-query>
 
-
+ 	<named-query name='Werknemer.findChef'>
+		<query>
+			select w from Werknemer w
+			where w.id = (select w.chefid from Werknemer w where w.id=:id) 
+		</query>
+	</named-query>
 
 	<named-query name='Werknemer.findByJobtitelNaam'>
 		<query>
