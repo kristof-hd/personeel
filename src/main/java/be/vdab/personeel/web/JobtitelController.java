@@ -1,6 +1,10 @@
 package be.vdab.personeel.web;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,8 +27,10 @@ class JobtitelController {
 	}
 	
 	@GetMapping
-	ModelAndView read() {
+	ModelAndView read(@CookieValue(name="reedsBezocht", required=false) String reedsBezocht, HttpServletResponse response) {
 
+			Cookie cookie = new Cookie("reedsBezocht", "ja****");
+			response.addCookie(cookie);
 			return new ModelAndView(JOBTITELS_VIEW, "jobtitels", jobtitelService.findAll());
 			//return new ModelAndView(WERKNEMER_VIEW, "werknemer", werknemer.get());
 	}

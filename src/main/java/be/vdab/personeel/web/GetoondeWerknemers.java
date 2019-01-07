@@ -6,4 +6,5 @@ interface GetoondeWerknemers {
 	void addWerknemerId(long werknemerId);
 	void removeLastWerknemerId();
 	public List<Long> getWerknemerIds(); 
+	void removeAllWerknemerIds(); 
 }

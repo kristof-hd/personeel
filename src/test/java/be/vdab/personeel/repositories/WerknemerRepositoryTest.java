@@ -33,12 +33,19 @@ public class WerknemerRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	
 	@Test
 	public void update() {
-		long id = super.jdbcTemplate.queryForObject("select id from werknemers where familienaam='test'", Long.class);
+		long id = idVanTestWerknemer();
 		assertEquals(0,BigDecimal.valueOf(2000)
 				.compareTo(super.jdbcTemplate.queryForObject("select salaris from werknemers where id=?",  BigDecimal.class, id)));
-		Jobtitel jobtitel = new Jobtitel("test", 0); 
+
+		List<Werknemer> werknemers = repository.findAll();
+		for (Werknemer werknemer1: werknemers) {
+			System.out.println(werknemer1.getId()+" "+werknemer1.getFamilienaam()+" "+werknemer1.getSalaris());		
+		}
+
+		Jobtitel jobtitel = new Jobtitel("test", 0);
 		Werknemer werknemer = new Werknemer(id, "test", "test", "test@test.com", jobtitel, BigDecimal.valueOf(2100), "test", LocalDate.of(1999, 1,  1), 1, 0); 
 		repository.save(werknemer);
+
 		System.out.println(super.jdbcTemplate.queryForObject("select salaris from werknemers where id=?",  BigDecimal.class, id));
 
 		assertEquals(0,BigDecimal.valueOf(2100)
@@ -58,17 +65,22 @@ public class WerknemerRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	}
 	
 	@Test
-	public void testen() {
-		List<Werknemer> werknemers = repository.findAll(); 
-		assertEquals(1, werknemers.size()); 
-	}
-	
-	@Test
 	public void findMetHoogsteHierarchie() {
 		long id = super.jdbcTemplate.queryForObject("select id from werknemers where chefid is null", Long.class);
 		Werknemer werknemerMetHoogsteHierarchie = repository.findMetHoogsteHierarchie();
 		assertEquals(id, werknemerMetHoogsteHierarchie.getId());		
 
+	}
+	
+	@Test
+	public void findOndergeschikten() {
+		long id = idVanTestWerknemer(); 
+		List<Werknemer> ondergeschikten = repository.findOndergeschikten(id);
+		for (Werknemer ondergeschikte: ondergeschikten) {
+			assertEquals((long) ondergeschikte.getChefid(), id); 
+		}
+		assertEquals(super.countRowsInTableWhere(WERKNEMERS, "chefid="+id), ondergeschikten.size()); 
+		
 	}
 	
 	@Test

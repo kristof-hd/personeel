@@ -27,4 +27,10 @@ public class DefaultGetoondeWerknemers implements Serializable, GetoondeWerkneme
 	public List<Long> getWerknemerIds() {
 		return werknemerIds; 
 	}
+
+	@Override
+	public void removeAllWerknemerIds() {
+		werknemerIds.removeAll(werknemerIds);
+	}
+
 }

@@ -18,7 +18,12 @@
 		<label>Bedrag: 
 			<span th:if="${#fields.hasErrors('bedrag')}" th:errors='*{bedrag}'></span> 
 			<input type='number' th:field='*{bedrag}' required autofocus min='1'>
-		</label> <input type='submit' value='Opslag'>
+		</label> 
+		<input type='submit' value='Opslag'>
+
+		<div th:if='${#fields.hasGlobalErrors()}'>
+			<div class='fout' th:each='err : ${#fields.globalErrors()}' th:text='${err}'></div>
+		</div>
 	</form>
 
 </body>

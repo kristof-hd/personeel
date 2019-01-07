@@ -73,7 +73,6 @@ public class Werknemer implements Serializable {
 	@NotNull
 	private LocalDate geboorte;
 
-	//@Rijksregisternummer
 	@Column(unique=true)
 	private long rijksregisternr; 
 
@@ -155,21 +154,21 @@ public class Werknemer implements Serializable {
 		return rijksregisternr;
 	}
 
-	public void setFamilienaam(String familienaam) {
-		this.familienaam = familienaam;
-	}
-
-	public void setVoornaam(String voornaam) {
-		this.voornaam = voornaam;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setChefid(Long chefid) {
-		this.chefid = chefid;
-	}
+//	public void setFamilienaam(String familienaam) {
+//		this.familienaam = familienaam;
+//	}
+//
+//	public void setVoornaam(String voornaam) {
+//		this.voornaam = voornaam;
+//	}
+//
+//	public void setEmail(String email) {
+//		this.email = email;
+//	}
+//
+//	public void setChefid(Long chefid) {
+//		this.chefid = chefid;
+//	}
 
 	public void setOndergeschikten(List<Werknemer> ondergeschikten) {
 		this.ondergeschikten = ondergeschikten;
@@ -179,17 +178,17 @@ public class Werknemer implements Serializable {
 		this.chef = chef;
 	}
 	
-	public void setJobtitel(Jobtitel jobtitel) {
-		this.jobtitel = jobtitel;
-	}
-
-	public void setSalaris(BigDecimal salaris) {
-		this.salaris = salaris;
-	}
-
-	public void setPaswoord(String paswoord) {
-		this.paswoord = paswoord;
-	}
+//	public void setJobtitel(Jobtitel jobtitel) {
+//		this.jobtitel = jobtitel;
+//	}
+//
+//	public void setSalaris(BigDecimal salaris) {
+//		this.salaris = salaris;
+//	}
+//
+//	public void setPaswoord(String paswoord) {
+//		this.paswoord = paswoord;
+//	}
 
 	public void setGeboorte(LocalDate geboorte) {
 		this.geboorte = geboorte;
@@ -206,6 +205,23 @@ public class Werknemer implements Serializable {
 		salaris=salaris.add(bedrag); 
 	}
 
+	public boolean isGeldigRijksregisternr() {
+
+		long eerste9Cijfers=rijksregisternr/100; 
+		long controlegetal=rijksregisternr%100;
+		long eerste6Cijfers = rijksregisternr/100000;
+
+		if (geboorte.getYear() < 2000) {
+			return ( (eerste6Cijfers/10000 == geboorte.getYear() % 100) && ((eerste6Cijfers % 10000)/100 == geboorte.getMonthValue()) && 
+					(eerste6Cijfers % 100 == geboorte.getDayOfMonth()) && controlegetal == (97-eerste9Cijfers%97) ); 
+		}
+		else {
+			return ( (eerste6Cijfers/10000 == geboorte.getYear() % 100) && ((eerste6Cijfers % 10000)/100 == geboorte.getMonthValue()) && 
+					(eerste6Cijfers % 100 == geboorte.getDayOfMonth()) && controlegetal == (97-(2*Math.pow(10, 9)+eerste9Cijfers)%97) );
+		}		
+		
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

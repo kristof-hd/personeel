@@ -1,6 +1,8 @@
 package be.vdab.personeel.entities;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -44,5 +46,29 @@ public class WerknemerTest {
 		assertEquals(0, ORIGINEEL_SALARIS.compareTo(werknemer1.getSalaris())); 
 	}
 	
-	
+	@Test
+	public void isGeldigRijksregisternr() {
+ 		
+		//rijksregisternummer van een familielid
+		werknemer1.setRijksregisternr(10011705866L);
+ 		werknemer1.setGeboorte(LocalDate.of(2010, 1, 17));
+		assertTrue(werknemer1.isGeldigRijksregisternr()); 
+		
+		//eigen rijksregisternummer
+		werknemer1.setRijksregisternr(78112923726L);
+		werknemer1.setGeboorte(LocalDate.of(1978, 11, 29));
+		assertTrue(werknemer1.isGeldigRijksregisternr());
+		
+		//controlegetal verkeerd instellen 
+		werknemer1.setRijksregisternr(10011705865L);
+ 		werknemer1.setGeboorte(LocalDate.of(2010, 1, 17));
+		assertFalse(werknemer1.isGeldigRijksregisternr()); 
+		
+		//controlegetal verkeerd instellen
+		werknemer1.setRijksregisternr(78112923725L);
+		werknemer1.setGeboorte(LocalDate.of(1978, 11, 29));
+		assertFalse(werknemer1.isGeldigRijksregisternr());
+		
+		
+	}
 }

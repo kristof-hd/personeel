@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,7 +56,14 @@ class WerknemerController {
 	}
 	
 	@GetMapping("{werknemer}")
-	ModelAndView read(@PathVariable Optional<Werknemer> werknemer, RedirectAttributes redirectAttributes) {
+	ModelAndView read(@PathVariable Optional<Werknemer> werknemer, RedirectAttributes redirectAttributes, @CookieValue(name="reedsBezocht", required=false) String reedsBezocht) {
+
+		if (reedsBezocht != null) {
+			getoondeWerknemers.removeAllWerknemerIds();
+			getoondeWerknemers.addWerknemerId(werknemer.get().getId());
+			return new ModelAndView(WERKNEMER_VIEW).addObject("getoondeWerknemers", maakWerknemersVanWerknemerIds(getoondeWerknemers.getWerknemerIds()));
+		}
+				
 		if (werknemer.isPresent()) {
 
 			if (getoondeWerknemers.getWerknemerIds().contains(werknemer.get().getId())){
@@ -89,9 +97,11 @@ class WerknemerController {
 			werknemer.get().opslag(form.getBedrag());
 			werknemerService.update(werknemer.get());
 			redirectAttributes.addAttribute("id", werknemer.get().getId());
+			getoondeWerknemers.addWerknemerId(werknemer.get().getId()); 
 			return new ModelAndView(REDIRECT_NA_OPSLAG);
 		}
 		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
+		
 		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN);
 	}	
 
