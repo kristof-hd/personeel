@@ -49,26 +49,35 @@ public class WerknemerTest {
 	@Test
 	public void isGeldigRijksregisternr() {
  		
-		//rijksregisternummer van een familielid
+	//correcte rijksregisternummers: 
+
 		werknemer1.setRijksregisternr(10011705866L);
- 		werknemer1.setGeboorte(LocalDate.of(2010, 1, 17));
+		werknemer1.setGeboorte(LocalDate.of(2010, 1, 17));
 		assertTrue(werknemer1.isGeldigRijksregisternr()); 
-		
-		//eigen rijksregisternummer
+			
 		werknemer1.setRijksregisternr(78112923726L);
 		werknemer1.setGeboorte(LocalDate.of(1978, 11, 29));
 		assertTrue(werknemer1.isGeldigRijksregisternr());
 		
-		//controlegetal verkeerd instellen 
+	//verkeerd controlegetal  
+
 		werknemer1.setRijksregisternr(10011705865L);
- 		werknemer1.setGeboorte(LocalDate.of(2010, 1, 17));
+		werknemer1.setGeboorte(LocalDate.of(2010, 1, 17));
 		assertFalse(werknemer1.isGeldigRijksregisternr()); 
 		
-		//controlegetal verkeerd instellen
 		werknemer1.setRijksregisternr(78112923725L);
 		werknemer1.setGeboorte(LocalDate.of(1978, 11, 29));
 		assertFalse(werknemer1.isGeldigRijksregisternr());
 		
+	//geen overeenkomst met geboortedatum: 
+
+		werknemer1.setRijksregisternr(10011805866L);
+		werknemer1.setGeboorte(LocalDate.of(2010, 1, 17));
+		assertFalse(werknemer1.isGeldigRijksregisternr()); 
+			
+		werknemer1.setRijksregisternr(78113023726L);
+		werknemer1.setGeboorte(LocalDate.of(1978, 11, 29));
+		assertFalse(werknemer1.isGeldigRijksregisternr());
 		
 	}
 }

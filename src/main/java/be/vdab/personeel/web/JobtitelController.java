@@ -29,10 +29,9 @@ class JobtitelController {
 	@GetMapping
 	ModelAndView read(@CookieValue(name="reedsBezocht", required=false) String reedsBezocht, HttpServletResponse response) {
 
-			Cookie cookie = new Cookie("reedsBezocht", "ja****");
+			Cookie cookie = new Cookie("reedsBezocht", "ja");
 			response.addCookie(cookie);
 			return new ModelAndView(JOBTITELS_VIEW, "jobtitels", jobtitelService.findAll());
-			//return new ModelAndView(WERKNEMER_VIEW, "werknemer", werknemer.get());
 	}
 	
 	@GetMapping(params="jobtitel")

@@ -108,7 +108,7 @@ class WerknemerController {
 	@GetMapping("{werknemer}/rijksregisternummer")
 	ModelAndView rijksregisternummer(@PathVariable Optional<Werknemer> werknemer) {
 		RijksregisternummerForm form = new RijksregisternummerForm();
-		form.setGeboorte(werknemer.get().getGeboorte());
+		form.setGeboorteAlsString(werknemer.get().getGeboorte().toString());
 		form.setRijksregisternr(werknemer.get().getRijksregisternr());
 		return new ModelAndView(RIJKSREGISTERNUMMER_VIEW)
 					.addObject(werknemer.get())
@@ -124,6 +124,7 @@ class WerknemerController {
 			werknemer.get().setRijksregisternr(form.getRijksregisternr());
 			werknemerService.update(werknemer.get());
 			redirectAttributes.addAttribute("id", werknemer.get().getId());
+			getoondeWerknemers.addWerknemerId(werknemer.get().getId()); 
 			return new ModelAndView(REDIRECT_NA_RIJKSREGISTERNUMMER);
 		}
 		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");

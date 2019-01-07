@@ -12,7 +12,8 @@ public class RijksregisternummerForm {
 	@NotNull
 	private long rijksregisternr;
 
-	private LocalDate geboorte; 
+	private String geboorteAlsString;
+	//private LocalDate geboorte; 
 	
 
 	public long getRijksregisternr() {
@@ -21,15 +22,23 @@ public class RijksregisternummerForm {
 
 	public void setRijksregisternr(long rijksregisternr) {
 		this.rijksregisternr = rijksregisternr;
+	}
+
+	public String getGeboorteAlsString() {
+		return geboorteAlsString;
+	}
+
+	public void setGeboorteAlsString(String geboorteAlsString) {
+		this.geboorteAlsString = geboorteAlsString;
 	} 
 
-	public LocalDate getGeboorte() {
-		return geboorte;
-	}
-
-	public void setGeboorte(LocalDate geboorte) {
-		this.geboorte = geboorte;
-	}
+//	public LocalDate getGeboorte() {
+//		return geboorte;
+//	}
+//
+//	public void setGeboorte(LocalDate geboorte) {
+//		this.geboorte = geboorte;
+//	}
 	
 	
 }

@@ -34,7 +34,7 @@
 	
 			<dt>Ondergeschikten</dt>		
 			<dd>
-				<ul>
+				<ul id='ondergeschikten'>
 					<li th:each='ondergeschikte:${werknemer.ondergeschikten}'>
 						<a th:href='@{/werknemers/{id}(id=${ondergeschikte.id})}' th:text='|${ondergeschikte.voornaam} ${ondergeschikte.familienaam}|'></a>
 					</li>
@@ -43,6 +43,8 @@
 	
 			<dt>Foto</dt>
 			<dd><img alt='foto' th:src='@{/images/{nummer}.jpg(nummer=${werknemer.id})}' th:title='|${werknemer.voornaam} ${werknemer.familienaam}|'></dd>	
+			
+			<br>
 			
 			<a th:href='@{/werknemers/{id}/opslag(id=${werknemer.id})}'>Opslag</a>
 			<a th:href='@{/werknemers/{id}/rijksregisternummer(id=${werknemer.id})}'>Rijksregisternummer</a>

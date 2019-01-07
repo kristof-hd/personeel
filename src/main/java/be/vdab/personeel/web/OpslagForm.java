@@ -19,5 +19,4 @@ class OpslagForm {
 		this.bedrag = bedrag;
 	}
 	
-	
 }
