@@ -54,7 +54,15 @@ public class WerknemerTest {
 		werknemer1.setRijksregisternr(10011705866L);
 		werknemer1.setGeboorte(LocalDate.of(2010, 1, 17));
 		assertTrue(werknemer1.isGeldigRijksregisternr()); 
-			
+
+		werknemer1.setRijksregisternr(10011708143L);
+		werknemer1.setGeboorte(LocalDate.of(2010, 1, 17));
+		assertTrue(werknemer1.isGeldigRijksregisternr()); 		
+		
+		werknemer1.setRijksregisternr(7030612091L);
+		werknemer1.setGeboorte(LocalDate.of(2007, 3, 6));
+		assertTrue(werknemer1.isGeldigRijksregisternr()); 		
+		
 		werknemer1.setRijksregisternr(78112923726L);
 		werknemer1.setGeboorte(LocalDate.of(1978, 11, 29));
 		assertTrue(werknemer1.isGeldigRijksregisternr());

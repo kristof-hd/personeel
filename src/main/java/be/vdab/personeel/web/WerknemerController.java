@@ -1,14 +1,11 @@
 package be.vdab.personeel.web;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,11 +28,9 @@ class WerknemerController {
 	private static final String RIJKSREGISTERNUMMER_VIEW="werknemers/rijksregisternummer"; 
 	private static final String REDIRECT_NA_RIJKSREGISTERNUMMER="redirect:/werknemers/{id}"; 
 
-	private final GetoondeWerknemers getoondeWerknemers; 
 	private final WerknemerService werknemerService; 
 	
-	WerknemerController(GetoondeWerknemers getoondeWerknemers, WerknemerService werknemerService) {
-		this.getoondeWerknemers=getoondeWerknemers;
+	WerknemerController(WerknemerService werknemerService) {
 		this.werknemerService=werknemerService;
 	}
 	
@@ -45,36 +40,17 @@ class WerknemerController {
 		return "redirect:/werknemers/"+idHoogste;
 	}
 
-	private List<Werknemer> maakWerknemersVanWerknemerIds(List<Long> werknemerIds) {
-		List<Werknemer> werknemers = new ArrayList<>(werknemerIds.size());
-		for (long id: werknemerIds) {
-			werknemerService.findById(id).get().setOndergeschikten(werknemerService.findOndergeschikten(id));
-			werknemerService.findById(id).get().setChef(werknemerService.findChef(id));
-			werknemerService.findById(id).ifPresent(werknemer -> werknemers.add(werknemer));
-		}
-		return werknemers; 
-	}
-	
 	@GetMapping("{werknemer}")
-	ModelAndView read(@PathVariable Optional<Werknemer> werknemer, RedirectAttributes redirectAttributes, @CookieValue(name="reedsBezocht", required=false) String reedsBezocht) {
+	ModelAndView read(@PathVariable Optional<Werknemer> werknemer, RedirectAttributes redirectAttributes) {
 
-		if (reedsBezocht != null) {
-			getoondeWerknemers.removeAllWerknemerIds();
-			getoondeWerknemers.addWerknemerId(werknemer.get().getId());
-			return new ModelAndView(WERKNEMER_VIEW).addObject("getoondeWerknemers", maakWerknemersVanWerknemerIds(getoondeWerknemers.getWerknemerIds()));
-		}
-				
 		if (werknemer.isPresent()) {
 
-			if (getoondeWerknemers.getWerknemerIds().contains(werknemer.get().getId())){
-				getoondeWerknemers.removeLastWerknemerId();
-				return new ModelAndView(WERKNEMER_VIEW)
-						.addObject("getoondeWerknemers", maakWerknemersVanWerknemerIds(getoondeWerknemers.getWerknemerIds()));
-			}
-			
-			getoondeWerknemers.addWerknemerId(werknemer.get().getId());
+			long id=werknemer.get().getId();
+
 			return new ModelAndView(WERKNEMER_VIEW)
-					.addObject("getoondeWerknemers", maakWerknemersVanWerknemerIds(getoondeWerknemers.getWerknemerIds()));
+					.addObject("chef", werknemerService.findChef(id))
+					.addObject("ondergeschikten", werknemerService.findOndergeschikten(id))
+					.addObject(werknemer.get());
 		}
 		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
 		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN); 
@@ -97,7 +73,6 @@ class WerknemerController {
 			werknemer.get().opslag(form.getBedrag());
 			werknemerService.update(werknemer.get());
 			redirectAttributes.addAttribute("id", werknemer.get().getId());
-			getoondeWerknemers.addWerknemerId(werknemer.get().getId()); 
 			return new ModelAndView(REDIRECT_NA_OPSLAG);
 		}
 		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
@@ -124,7 +99,6 @@ class WerknemerController {
 			werknemer.get().setRijksregisternr(form.getRijksregisternr());
 			werknemerService.update(werknemer.get());
 			redirectAttributes.addAttribute("id", werknemer.get().getId());
-			getoondeWerknemers.addWerknemerId(werknemer.get().getId()); 
 			return new ModelAndView(REDIRECT_NA_RIJKSREGISTERNUMMER);
 		}
 		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");

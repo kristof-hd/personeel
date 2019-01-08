@@ -13,8 +13,8 @@ import javax.validation.Payload;
 @Retention(RUNTIME)
 @Target({ TYPE, ANNOTATION_TYPE })
 @Constraint(validatedBy = RijksregisternummerFormValidator.class)
-public @interface RijksregisternummerFormGeboortedatumEnControlegetal {
-	String message() default "{be.vdab.personeel.constraints.RijksregisternummerFormGeboortedatumEnControlegetal.message}";
+public @interface Rijksregisternummer {
+	String message() default "{be.vdab.personeel.constraints.Rijksregisternummer.message}";
 	Class<?>[] groups() default {};
 	Class<? extends Payload>[] payload() default {};
 

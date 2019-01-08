@@ -3,7 +3,6 @@ package be.vdab.personeel.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
@@ -32,6 +30,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
 public class Werknemer implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -48,12 +47,6 @@ public class Werknemer implements Serializable {
 	private String email; 
 
 	private Long chefid; 
-	
-	@Transient
-	private List<Werknemer> ondergeschikten;  
-	
-	@Transient
-	private Werknemer chef;
 	
 	@ManyToOne(fetch=FetchType.LAZY, optional=false)
 	@JoinColumn(name="jobtitelid")
@@ -79,18 +72,8 @@ public class Werknemer implements Serializable {
 	@Version
 	private long versie;
 
-	public Werknemer(long id, String familienaam, String voornaam, String email, Jobtitel jobtitel, BigDecimal salaris, String paswoord, LocalDate geboorte, long rijksregisternr, long versie) {
-		this.id=id; 
-		this.familienaam=familienaam;
-		this.voornaam=voornaam;
-		this.email=email; 
-		this.jobtitel=jobtitel; 
-		this.salaris=salaris;
-		this.paswoord=paswoord;
-		this.geboorte=geboorte;
-		this.rijksregisternr=rijksregisternr;
-		this.versie=versie; 
-	}
+	private static final long KLEINSTE_RIJKSREGISTERNR = 10100105L; 
+	private static final long GROOTSTE_RIJKSREGISTERNR = 99123199940L; 
 	
 	public Werknemer(String familienaam, String voornaam, String email, Jobtitel jobtitel, BigDecimal salaris, String paswoord, LocalDate geboorte, long rijksregisternr, long versie) {
 		this.familienaam=familienaam;
@@ -104,6 +87,11 @@ public class Werknemer implements Serializable {
 		this.versie=versie; 
 	}
 
+	public Werknemer(long id, String familienaam, String voornaam, String email, Jobtitel jobtitel, BigDecimal salaris, String paswoord, LocalDate geboorte, long rijksregisternr, long versie) {
+		this(familienaam, voornaam, email, jobtitel, salaris, paswoord, geboorte, rijksregisternr, versie);
+		this.id=id; 
+	}
+	
 	public Werknemer() {}
 	
 	public long getId() {
@@ -126,24 +114,12 @@ public class Werknemer implements Serializable {
 		return chefid;
 	}
 
-	public List<Werknemer> getOndergeschikten() {
-		return ondergeschikten;
-	}
-
-	public Werknemer getChef() {
-		return chef;
-	}	
-	
 	public Jobtitel getJobtitel() {
 		return jobtitel;
 	}
 
 	public BigDecimal getSalaris() {
 		return salaris;
-	}
-
-	public String getPaswoord() {
-		return paswoord;
 	}
 
 	public LocalDate getGeboorte() {
@@ -153,42 +129,6 @@ public class Werknemer implements Serializable {
 	public long getRijksregisternr() {
 		return rijksregisternr;
 	}
-
-//	public void setFamilienaam(String familienaam) {
-//		this.familienaam = familienaam;
-//	}
-//
-//	public void setVoornaam(String voornaam) {
-//		this.voornaam = voornaam;
-//	}
-//
-//	public void setEmail(String email) {
-//		this.email = email;
-//	}
-//
-//	public void setChefid(Long chefid) {
-//		this.chefid = chefid;
-//	}
-
-	public void setOndergeschikten(List<Werknemer> ondergeschikten) {
-		this.ondergeschikten = ondergeschikten;
-	}
-
-	public void setChef(Werknemer chef) {
-		this.chef = chef;
-	}
-	
-//	public void setJobtitel(Jobtitel jobtitel) {
-//		this.jobtitel = jobtitel;
-//	}
-//
-//	public void setSalaris(BigDecimal salaris) {
-//		this.salaris = salaris;
-//	}
-//
-//	public void setPaswoord(String paswoord) {
-//		this.paswoord = paswoord;
-//	}
 
 	public void setGeboorte(LocalDate geboorte) {
 		this.geboorte = geboorte;
@@ -206,18 +146,25 @@ public class Werknemer implements Serializable {
 	}
 
 	public boolean isGeldigRijksregisternr() {
+		return rijksregisternr >= KLEINSTE_RIJKSREGISTERNR && rijksregisternr <= GROOTSTE_RIJKSREGISTERNR && overeenkomstMetGeboortedatum(rijksregisternr, geboorte) && isControlegetalCorrect(rijksregisternr); 
+	}
+
+	private boolean overeenkomstMetGeboortedatum(long rijksregisternr, LocalDate geboorte) {
+		long eerste6Cijfers = rijksregisternr/100000;
+		return (eerste6Cijfers/10000 == geboorte.getYear() % 100) && ((eerste6Cijfers % 10000)/100 == geboorte.getMonthValue()) && 
+				(eerste6Cijfers % 100 == geboorte.getDayOfMonth());   
+	}
+	
+	private boolean isControlegetalCorrect(long rijksregisternr) {
 
 		long eerste9Cijfers=rijksregisternr/100; 
 		long controlegetal=rijksregisternr%100;
-		long eerste6Cijfers = rijksregisternr/100000;
-
+		
 		if (geboorte.getYear() < 2000) {
-			return ( (eerste6Cijfers/10000 == geboorte.getYear() % 100) && ((eerste6Cijfers % 10000)/100 == geboorte.getMonthValue()) && 
-					(eerste6Cijfers % 100 == geboorte.getDayOfMonth()) && controlegetal == (97-eerste9Cijfers%97) ); 
+			return (controlegetal == (97-eerste9Cijfers%97)); 
 		}
 		else {
-			return ( (eerste6Cijfers/10000 == geboorte.getYear() % 100) && ((eerste6Cijfers % 10000)/100 == geboorte.getMonthValue()) && 
-					(eerste6Cijfers % 100 == geboorte.getDayOfMonth()) && controlegetal == (97-(2*Math.pow(10, 9)+eerste9Cijfers)%97) );
+			return (controlegetal == (97-(2*Math.pow(10, 9)+eerste9Cijfers)%97));
 		}		
 		
 	}
@@ -231,14 +178,14 @@ public class Werknemer implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(Object object) {
+		if (this == object)
 			return true;
-		if (obj == null)
+		if (object == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (getClass() != object.getClass())
 			return false;
-		Werknemer other = (Werknemer) obj;
+		Werknemer other = (Werknemer) object;
 		if (rijksregisternr != other.rijksregisternr)
 			return false;
 		return true;

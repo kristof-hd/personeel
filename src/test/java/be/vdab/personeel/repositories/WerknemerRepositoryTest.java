@@ -37,16 +37,9 @@ public class WerknemerRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 		assertEquals(0,BigDecimal.valueOf(2000)
 				.compareTo(super.jdbcTemplate.queryForObject("select salaris from werknemers where id=?",  BigDecimal.class, id)));
 
-		List<Werknemer> werknemers = repository.findAll();
-		for (Werknemer werknemer1: werknemers) {
-			System.out.println(werknemer1.getId()+" "+werknemer1.getFamilienaam()+" "+werknemer1.getSalaris());		
-		}
-
 		Jobtitel jobtitel = new Jobtitel("test", 0);
 		Werknemer werknemer = new Werknemer(id, "test", "test", "test@test.com", jobtitel, BigDecimal.valueOf(2100), "test", LocalDate.of(1999, 1,  1), 1, 0); 
 		repository.save(werknemer);
-
-		System.out.println(super.jdbcTemplate.queryForObject("select salaris from werknemers where id=?",  BigDecimal.class, id));
 
 		assertEquals(0,BigDecimal.valueOf(2100)
 			.compareTo(super.jdbcTemplate.queryForObject("select salaris from werknemers where id=?",  BigDecimal.class, id)));

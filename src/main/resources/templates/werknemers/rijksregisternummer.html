@@ -18,7 +18,7 @@
 		<label id='geboorte'>Geboorte:
 			<input th:field='*{geboorteAlsString}' required autofocus>
 		</label>
-<!-- 		<script>document.getElementById('geboorte').style.visibility="hidden"</script>	 -->
+ 		<script>document.getElementById('geboorte').style.visibility="hidden"</script>
 		<input type='submit' value='Opslaan'>
 
 		<div th:if='${#fields.hasGlobalErrors()}'>
