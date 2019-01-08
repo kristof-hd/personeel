@@ -92,7 +92,8 @@ public class Werknemer implements Serializable {
 		this.id=id; 
 	}
 	
-	public Werknemer() {}
+	public Werknemer() {
+	}
 	
 	public long getId() {
 		return id;

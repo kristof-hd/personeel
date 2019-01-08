@@ -1,6 +1,7 @@
 package be.vdab.personeel.entities;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -47,7 +48,7 @@ public class Jobtitel implements Serializable {
 	}
 
 	public Set<Werknemer> getWerknemers() {
-		return werknemers;
+		return Collections.unmodifiableSet(werknemers);
 	}
 
 	public void setNaam(String naam) {
