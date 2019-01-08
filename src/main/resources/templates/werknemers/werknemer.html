@@ -8,10 +8,9 @@
 </head>
 <body>
 
-<!-- 	<div th:each='werknemer:${getoondeWerknemers}'> -->
-
 		<h1 th:text='|${werknemer.voornaam} ${werknemer.familienaam}|'></h1>
 		<dl>
+
 			<dt>Voornaam</dt>
 			<dd th:text='${werknemer.voornaam}'></dd>
 			<dt>Familienaam</dt>
@@ -24,51 +23,29 @@
 	 		<dd th:text='${werknemer.jobtitel.naam}'></dd> 
 			<dt>Geboorte</dt>
 			<dd th:text='${{werknemer.geboorte}}'></dd>
-
-			<div th:if='${chef != null}'>
-				<dt>Chef</dt>		
-				<dd>
-					<a th:href='@{/werknemers/{id}(id=${chef.id})}' th:text='|${chef.voornaam} ${chef.familienaam}|'></a>
-				</dd>
-			</div>
-
-<!-- 			<div th:if='${werknemer.chef != null}'>
-				<dt>Chef</dt>		
-				<dd>
-					<a th:href='@{/werknemers/{id}(id=${werknemer.chef.id})}' th:text='|${werknemer.chef.voornaam} ${werknemer.chef.familienaam}|'></a>
-				</dd>
-			</div>
- -->	
-			<dt>Ondergeschikten</dt>
- 			<dd>
+			
+			<dt th:if='${chef != null}'>Chef</dt>		
+			<dd th:if='${chef != null}'>
+				<a th:href='@{/werknemers/{id}(id=${chef.id})}' th:text='|${chef.voornaam} ${chef.familienaam}|'></a>
+			</dd>
+			
+			<dt th:if="${not #lists.isEmpty(ondergeschikten)}">Ondergeschikten</dt>
+ 			<dd th:if="${not #lists.isEmpty(ondergeschikten)}">
 				<ul id='ondergeschikten'>
 					<li th:each='ondergeschikte:${ondergeschikten}'>
 						<a th:href='@{/werknemers/{id}(id=${ondergeschikte.id})}' th:text='|${ondergeschikte.voornaam} ${ondergeschikte.familienaam}|'></a>
 					</li>
 				</ul>
 			</dd> 					
-<!-- 			<dd>
-				<ul id='ondergeschikten'>
-					<li th:each='ondergeschikte:${werknemer.ondergeschikten}'>
-						<a th:href='@{/werknemers/{id}(id=${ondergeschikte.id})}' th:text='|${ondergeschikte.voornaam} ${ondergeschikte.familienaam}|'></a>
-					</li>
-				</ul>
-			</dd> -->
-	
+
 			<dt>Foto</dt>
 			<dd><img alt='foto' th:src='@{/images/{nummer}.jpg(nummer=${werknemer.id})}' th:title='|${werknemer.voornaam} ${werknemer.familienaam}|'></dd>	
-			
-			<br>
-			
-			<a th:href='@{/werknemers/{id}/opslag(id=${werknemer.id})}'>Opslag</a>
-			<a th:href='@{/werknemers/{id}/rijksregisternummer(id=${werknemer.id})}'>Rijksregisternummer</a>
-			
+
 		</dl>
 
+		<br>
+		<a th:href='@{/werknemers/{id}/opslag(id=${werknemer.id})}'>Opslag</a>
+		<a th:href='@{/werknemers/{id}/rijksregisternummer(id=${werknemer.id})}'>Rijksregisternummer</a>
 
-<!-- 	</div> -->
-
-
-	
 </body>
 </html>

@@ -20,8 +20,7 @@ public class WerknemerTest {
 	public void before() {
 		jobtitel1 = new Jobtitel("test", 0); 
 		werknemer1 = new Werknemer("test", "test", "test@test.com", jobtitel1, ORIGINEEL_SALARIS, "test", LocalDate.of(1999, 1,  1), 1, 0);
- 
-	}
+ 	}
 	
 	@Test
 	public void opslag() {
@@ -67,7 +66,7 @@ public class WerknemerTest {
 		werknemer1.setGeboorte(LocalDate.of(1978, 11, 29));
 		assertTrue(werknemer1.isGeldigRijksregisternr());
 		
-	//verkeerd controlegetal  
+	//verkeerd controlegetal:  
 
 		werknemer1.setRijksregisternr(10011705865L);
 		werknemer1.setGeboorte(LocalDate.of(2010, 1, 17));

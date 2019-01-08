@@ -62,7 +62,13 @@ public class WerknemerRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 		long id = super.jdbcTemplate.queryForObject("select id from werknemers where chefid is null", Long.class);
 		Werknemer werknemerMetHoogsteHierarchie = repository.findMetHoogsteHierarchie();
 		assertEquals(id, werknemerMetHoogsteHierarchie.getId());		
-
+	}
+	
+	@Test
+	public void findChef() {
+		long id = super.jdbcTemplate.queryForObject("select id from werknemers where familienaam='testOndergeschikte1'", Long.class);
+		Werknemer chef = repository.findChef(id); 
+		assertEquals(chef.getId(), (long) super.jdbcTemplate.queryForObject("select chefid from werknemers where familienaam='testOndergeschikte1'", Long.class));
 	}
 	
 	@Test
@@ -73,7 +79,6 @@ public class WerknemerRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 			assertEquals((long) ondergeschikte.getChefid(), id); 
 		}
 		assertEquals(super.countRowsInTableWhere(WERKNEMERS, "chefid="+id), ondergeschikten.size()); 
-		
 	}
 	
 	@Test

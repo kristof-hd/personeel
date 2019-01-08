@@ -17,7 +17,7 @@
 		th:object='${opslagForm}'>
 		<label>Bedrag: 
 			<span th:if="${#fields.hasErrors('bedrag')}" th:errors='*{bedrag}'></span> 
-			<input type='number' th:field='*{bedrag}' required autofocus min='1'>
+ 			<input type='number' th:field='*{bedrag}' required autofocus min='1'>
 		</label> 
 		<input type='submit' value='Opslag'>
 

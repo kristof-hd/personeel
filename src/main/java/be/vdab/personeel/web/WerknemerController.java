@@ -2,6 +2,7 @@ package be.vdab.personeel.web;
 
 import java.util.Optional;
 
+import javax.persistence.OptimisticLockException;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -71,7 +72,12 @@ class WerknemerController {
 				return new ModelAndView(OPSLAG_VIEW).addObject(werknemer.get());
 			}
 			werknemer.get().opslag(form.getBedrag());
-			werknemerService.update(werknemer.get());
+			try {
+				werknemerService.update(werknemer.get());
+			}
+			catch (OptimisticLockException ex) {
+				ex.getMessage(); 
+			}
 			redirectAttributes.addAttribute("id", werknemer.get().getId());
 			return new ModelAndView(REDIRECT_NA_OPSLAG);
 		}
@@ -83,12 +89,12 @@ class WerknemerController {
 	@GetMapping("{werknemer}/rijksregisternummer")
 	ModelAndView rijksregisternummer(@PathVariable Optional<Werknemer> werknemer) {
 		RijksregisternummerForm form = new RijksregisternummerForm();
-		form.setGeboorteAlsString(werknemer.get().getGeboorte().toString());
+		form.setGeboortedatumAlsString(werknemer.get().getGeboorte().toString());
 		form.setRijksregisternr(werknemer.get().getRijksregisternr());
 		return new ModelAndView(RIJKSREGISTERNUMMER_VIEW)
 					.addObject(werknemer.get())
 					.addObject(form);
-	}		
+	}
 
 	@PostMapping("{werknemer}/rijksregisternummer")
 	ModelAndView rijksregisternummer(@PathVariable Optional<Werknemer> werknemer, @Valid RijksregisternummerForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -97,7 +103,12 @@ class WerknemerController {
 				return new ModelAndView(RIJKSREGISTERNUMMER_VIEW).addObject(werknemer.get());
 			}
 			werknemer.get().setRijksregisternr(form.getRijksregisternr());
-			werknemerService.update(werknemer.get());
+			try {
+				werknemerService.update(werknemer.get());
+			}
+			catch (OptimisticLockException ex) {
+				ex.getMessage(); 
+			}
 			redirectAttributes.addAttribute("id", werknemer.get().getId());
 			return new ModelAndView(REDIRECT_NA_RIJKSREGISTERNUMMER);
 		}

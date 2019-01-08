@@ -16,15 +16,14 @@
 			<input type='number' th:field='*{rijksregisternr}' required autofocus>
 		</label> 
 		<label id='geboorte'>Geboorte:
-			<input th:field='*{geboorteAlsString}' required autofocus>
+			<input th:field='*{geboortedatumAlsString}' required autofocus>
 		</label>
- 		<script>document.getElementById('geboorte').style.visibility="hidden"</script>
+<!--  		<script>document.getElementById('geboorte').style.visibility="hidden"</script> -->
 		<input type='submit' value='Opslaan'>
 
 		<div th:if='${#fields.hasGlobalErrors()}'>
 			<div class='fout' th:each='err : ${#fields.globalErrors()}' th:text='${err}'></div>
 		</div>
 	</form>
-
 </body>
 </html>

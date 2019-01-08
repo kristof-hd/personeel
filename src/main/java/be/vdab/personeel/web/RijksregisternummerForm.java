@@ -10,7 +10,7 @@ public class RijksregisternummerForm {
 	@NotNull
 	private long rijksregisternr;
 
-	private String geboorteAlsString;
+	private String geboortedatumAlsString;
 	
 	public long getRijksregisternr() {
 		return rijksregisternr;
@@ -20,12 +20,12 @@ public class RijksregisternummerForm {
 		this.rijksregisternr = rijksregisternr;
 	}
 
-	public String getGeboorteAlsString() {
-		return geboorteAlsString;
+	public String getGeboortedatumAlsString() {
+		return geboortedatumAlsString;
 	}
 
-	public void setGeboorteAlsString(String geboorteAlsString) {
-		this.geboorteAlsString = geboorteAlsString;
+	public void setGeboortedatumAlsString(String geboortedatumAlsString) {
+		this.geboortedatumAlsString = geboortedatumAlsString;
 	} 
 
 }

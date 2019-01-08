@@ -1,6 +1,7 @@
 package be.vdab.personeel.constraints;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -8,7 +9,7 @@ import javax.validation.ConstraintValidatorContext;
 import be.vdab.personeel.entities.Werknemer;
 import be.vdab.personeel.web.RijksregisternummerForm;
 
-public class RijksregisternummerFormValidator implements ConstraintValidator<Rijksregisternummer, RijksregisternummerForm> {
+public class RijksregisternummerValidator implements ConstraintValidator<Rijksregisternummer, RijksregisternummerForm> {
 
 	@Override
 	public void initialize(Rijksregisternummer arg0) {
@@ -18,7 +19,8 @@ public class RijksregisternummerFormValidator implements ConstraintValidator<Rij
 	public boolean isValid(RijksregisternummerForm form, ConstraintValidatorContext context) {
 	
 		long rijksregisternr = form.getRijksregisternr(); 
-		LocalDate geboorte=LocalDate.parse(form.getGeboorteAlsString());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate geboorte=LocalDate.parse(form.getGeboortedatumAlsString(), formatter);
 		
 		Werknemer werknemer = new Werknemer(); 
 		werknemer.setRijksregisternr(rijksregisternr);

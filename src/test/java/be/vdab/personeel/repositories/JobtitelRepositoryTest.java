@@ -18,7 +18,9 @@ import be.vdab.personeel.entities.Jobtitel;
 @DataJpaTest
 @Sql("/insertJobtitel.sql") 
 public class JobtitelRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests {
+	
 	private static final String JOBTITELS = "jobtitels";
+
 	@Autowired
 	private JobtitelRepository repository;
 
