@@ -24,8 +24,7 @@ class JobtitelController {
 	
 	@GetMapping
 	ModelAndView read() {
-
-			return new ModelAndView(JOBTITELS_VIEW, "jobtitels", jobtitelService.findAll());
+		return new ModelAndView(JOBTITELS_VIEW, "jobtitels", jobtitelService.findAll());
 	}
 	
 	@GetMapping(params="jobtitel")

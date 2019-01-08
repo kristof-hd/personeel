@@ -17,5 +17,4 @@ public @interface Rijksregisternummer {
 	String message() default "{be.vdab.personeel.constraints.Rijksregisternummer.message}";
 	Class<?>[] groups() default {};
 	Class<? extends Payload>[] payload() default {};
-
 }

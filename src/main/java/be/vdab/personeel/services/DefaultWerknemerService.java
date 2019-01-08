@@ -47,6 +47,5 @@ class DefaultWerknemerService implements WerknemerService {
 	@Override
 	public List<Werknemer> findByJobtitelNaam(String jobtitel) {
 		return werknemerRepository.findByJobtitelNaam(jobtitel); 
-		//return werknemerRepository.findAll();
 	}
 }
