@@ -45,12 +45,7 @@ class WerknemerController {
 	ModelAndView read(@PathVariable Optional<Werknemer> werknemer, RedirectAttributes redirectAttributes) {
 
 		if (werknemer.isPresent()) {
-
-			long id=werknemer.get().getId();
-
 			return new ModelAndView(WERKNEMER_VIEW)
-					.addObject("chef", werknemerService.findChef(id))
-					.addObject("ondergeschikten", werknemerService.findOndergeschikten(id))
 					.addObject(werknemer.get());
 		}
 		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");

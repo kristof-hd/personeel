@@ -1,6 +1,7 @@
 package be.vdab.personeel.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -22,6 +23,11 @@ class DefaultJobtitelService implements JobtitelService {
 		@Override
 		public List<Jobtitel> findAll() {
 			return jobtitelRepository.findAll(); 
+		}
+
+		@Override
+		public Optional<Jobtitel> read(long id) {
+			return jobtitelRepository.findById(id);
 		}
 
 }

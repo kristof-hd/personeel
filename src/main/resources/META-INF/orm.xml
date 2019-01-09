@@ -7,28 +7,8 @@
  	<named-query name='Werknemer.findMetHoogsteHierarchie'>
 		<query>
 			select w from Werknemer w
-			where w.chefid is null 
+			where w.chef.id is null 
 		</query>
 	</named-query>
 
- 	<named-query name='Werknemer.findOndergeschikten'>
-		<query>
-			select w from Werknemer w
-			where w.chefid = :id 
-		</query>
-	</named-query>
-
- 	<named-query name='Werknemer.findChef'>
-		<query>
-			select w from Werknemer w
-			where w.id = (select w.chefid from Werknemer w where w.id=:id) 
-		</query>
-	</named-query>
-
-	<named-query name='Werknemer.findByJobtitelNaam'>
-		<query>
-			select w from Werknemer w
-			where w.jobtitel.naam=:jobtitel
-		</query>
-	</named-query>
-</entity-mappings>
+ </entity-mappings>

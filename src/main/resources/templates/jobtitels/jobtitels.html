@@ -10,14 +10,14 @@
 	<h1 th:text='Jobtitels'></h1>
 	<ul id='jobtitels'>
 		<li th:each='jobtitel:${jobtitels}'>
-			<a th:href='@{/jobtitels/(jobtitel=${jobtitel.naam})}' th:text='${jobtitel.naam}'></a>
+			<a th:href='@{/jobtitels/{id}(id=${jobtitel.id})}' th:text='${jobtitel.naam}'></a>
 		</li>
 	</ul>
 	
-	<h1 th:text='${jobtitel}'></h1>
+	<h1 th:if="${jobtitel != null}" th:text='${jobtitel.naam}'></h1>
 	
-	<ul>
-		<li th:each='werknemer:${werknemers}'>
+	<ul th:if="${jobtitel != null}">
+		<li th:each='werknemer:${jobtitel.werknemers}'>
 			<a th:href='@{/werknemers/{id}(id=${werknemer.id})}' th:text='|${werknemer.voornaam} ${werknemer.familienaam}|'></a>
 		</li>
 	

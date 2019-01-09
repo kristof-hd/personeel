@@ -1,6 +1,5 @@
 package be.vdab.personeel.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -29,23 +28,9 @@ class DefaultWerknemerService implements WerknemerService {
 	}
 
 	@Override
-	public List<Werknemer> findOndergeschikten(long id) {
-		return werknemerRepository.findOndergeschikten(id); 
-	} 
-
-	@Override
-	public Werknemer findChef(long id) {
-		return werknemerRepository.findChef(id);
-	} 
-	
-	@Override
 	@Transactional(readOnly=false, isolation=Isolation.READ_COMMITTED)
 	public void update(Werknemer werknemer) {
 		werknemerRepository.save(werknemer); 
 	}
 
-	@Override
-	public List<Werknemer> findByJobtitelNaam(String jobtitel) {
-		return werknemerRepository.findByJobtitelNaam(jobtitel); 
-	}
 }

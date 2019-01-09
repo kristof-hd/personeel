@@ -3,6 +3,8 @@ package be.vdab.personeel.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.validation.constraints.Digits;
@@ -46,7 +49,12 @@ public class Werknemer implements Serializable {
 	@Email
 	private String email; 
 
-	private Long chefid; 
+	@ManyToOne(fetch=FetchType.LAZY, optional=false)
+	@JoinColumn(name="chefid")
+	private Werknemer chef;
+	
+	@OneToMany(mappedBy="chef")
+	private Set<Werknemer> ondergeschikten;
 	
 	@ManyToOne(fetch=FetchType.LAZY, optional=false)
 	@JoinColumn(name="jobtitelid")
@@ -111,10 +119,14 @@ public class Werknemer implements Serializable {
 		return email;
 	}
 
-	public Long getChefid() {
-		return chefid;
+	public Werknemer getChef() {
+		return chef;
 	}
 
+	public Set<Werknemer> getOndergeschikten() {
+		return Collections.unmodifiableSet(ondergeschikten);
+	}
+	
 	public Jobtitel getJobtitel() {
 		return jobtitel;
 	}

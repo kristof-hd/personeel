@@ -51,12 +51,4 @@ public class Jobtitel implements Serializable {
 		return Collections.unmodifiableSet(werknemers);
 	}
 
-	public void setNaam(String naam) {
-		this.naam = naam;
-	}
-
-	public void setWerknemers(Set<Werknemer> werknemers) {
-		this.werknemers = werknemers;
-	}
-	
 }
